@@ -10,13 +10,13 @@ public interface ManageItemsBO extends SuperBO {
 
     List<ItemDTO> getItems() throws Exception;
 
-    void createItem(ItemDTO dto) throws SQLException;
+    void createItem(ItemDTO dto) throws Exception;
 
-    void updateItem(ItemDTO dto) throws SQLException;
+    void updateItem(ItemDTO dto) throws Exception;
 
-    void deleteItem(String code) throws SQLException;
+    void deleteItem(String code) throws Exception;
 
-    ItemDTO findItem(String itemCode) throws SQLException;
+    ItemDTO findItem(String itemCode) throws Exception;
 
 
 

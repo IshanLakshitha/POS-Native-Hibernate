@@ -33,8 +33,59 @@ public class ManageItemsBOImpl implements ManageItemsBO {
        }
    }
 
-   public void createItem(ItemDTO dto){
-
+   public void createItem(ItemDTO dto) throws Exception {
+       Session mySession = HibernateUtil.getSessionFactory().openSession();
+       try(Session session = mySession){
+           itemDAO.setSesstion(session);
+           session.beginTransaction();
+           itemDAO.save(Converter.getEntity(dto));
+           session.getTransaction().commit();
+       } catch (Exception ex) {
+           mySession.getTransaction().rollback();
+           throw ex;
+       }
    }
+
+   public void updateItem(ItemDTO dto) throws Exception {
+       Session mySession = HibernateUtil.getSessionFactory().openSession();
+       try(Session session = mySession) {
+           itemDAO.setSesstion(session);
+           session.beginTransaction();
+           itemDAO.update(Converter.getEntity(dto));
+           session.getTransaction().commit();
+       } catch (Exception ex) {
+           mySession.getTransaction().rollback();
+           throw ex;
+       }
+   }
+
+   public void deleteItem(String itemID) throws Exception {
+       Session mySession = HibernateUtil.getSessionFactory().openSession();
+       try(Session session = mySession){
+           itemDAO.setSesstion(session);
+           session.beginTransaction();
+           itemDAO.delete(itemID);
+           session.getTransaction().commit();
+       } catch (Exception ex) {
+           mySession.getTransaction().rollback();
+           throw ex;
+       }
+   }
+
+    @Override
+    public ItemDTO findItem(String itemCode) throws Exception {
+        Session mySession = HibernateUtil.getSessionFactory().openSession();
+        try(Session session = mySession){
+            itemDAO.setSesstion(session);
+            session.beginTransaction();
+            ItemDTO itemDTO = itemDAO.find(itemCode).map(Converter::<ItemDTO>getDTO).orElse(null);
+            session.getTransaction().commit();
+            return itemDTO;
+        } catch (Exception ex) {
+            mySession.getTransaction().rollback();
+            throw ex;
+        }
+    }
+
 
 }

@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author ranjith-suranga
@@ -70,7 +72,14 @@ public class ManageItemFormController {
         btnSave.setDisable(true);
         btnDelete.setDisable(true);
 
-        List<ItemDTO> itemsDB = manageItemsBO.getItems();
+        List<ItemDTO> itemsDB = null;
+        try{
+            itemsDB = manageItemsBO.getItems();
+        } catch (Exception e) {
+            Logger.getLogger("").log(Level.SEVERE,null,e);
+        }
+
+
         ObservableList<ItemDTO> itemDTOS = FXCollections.observableArrayList(itemsDB);
         ObservableList<ItemTM> itemTMS = FXCollections.observableArrayList();
         for (ItemDTO itemDTO : itemDTOS) {
@@ -152,7 +161,15 @@ public class ManageItemFormController {
             tblItems.getItems().add(itemTM);
             ItemDTO itemDTO = new ItemDTO(txtItemCode.getText(), txtDescription.getText(),
                     Double.parseDouble(txtUnitPrice.getText()),Integer.parseInt(txtQty.getText()));
-            boolean result = manageItemsBO.createItem(itemDTO);
+            boolean result = false;
+                    try{
+                        manageItemsBO.createItem(itemDTO);
+                        result = true;
+                    } catch (Exception e) {
+                        result = false;
+                        Logger.getLogger("").log(Level.SEVERE, null, e);
+                    }
+
 
             if (result) {
                 new Alert(Alert.AlertType.INFORMATION, "Item has been saved successfully", ButtonType.OK).showAndWait();
@@ -172,8 +189,17 @@ public class ManageItemFormController {
 
             String selectedItemCode = tblItems.getSelectionModel().getSelectedItem().getCode();
 
-            boolean result = manageItemsBO.updateItem(new ItemDTO(txtItemCode.getText(), txtDescription.getText(),
-                    Double.parseDouble(txtUnitPrice.getText()),Integer.parseInt(txtQty.getText())));
+            boolean result = false;
+            try{
+                manageItemsBO.updateItem(new ItemDTO(txtItemCode.getText(), txtDescription.getText(),
+                        Double.parseDouble(txtUnitPrice.getText()),Integer.parseInt(txtQty.getText())));
+                result = true;
+            } catch (Exception e) {
+                result = false;
+                Logger.getLogger("").log(Level.SEVERE, null, e);
+
+            }
+
 
             if (result) {
                 new Alert(Alert.AlertType.INFORMATION, "Item has been updated successfully", ButtonType.OK).showAndWait();
@@ -196,7 +222,16 @@ public class ManageItemFormController {
             String selectedRow = tblItems.getSelectionModel().getSelectedItem().getCode();
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
-            boolean result = manageItemsBO.deleteItem(selectedRow);
+            boolean result = false;
+                    try{
+                        manageItemsBO.deleteItem(selectedRow);
+                        result = true;
+                    } catch (Exception e) {
+                        result = false;
+                        Logger.getLogger("").log(Level.SEVERE, null, e);
+
+                    }
+
             if (!result){
                 new Alert(Alert.AlertType.ERROR,"Failed to delete the item", ButtonType.OK).showAndWait();
             }else{
