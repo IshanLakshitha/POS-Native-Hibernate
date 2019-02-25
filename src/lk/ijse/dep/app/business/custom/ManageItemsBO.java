@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface ManageItemsBO extends SuperBO {
 
-    List<ItemDTO> getItems() throws SQLException;
+    List<ItemDTO> getItems() throws Exception;
 
-    boolean createItem(ItemDTO dto) throws SQLException;
+    void createItem(ItemDTO dto) throws SQLException;
 
-    boolean updateItem(ItemDTO dto) throws SQLException;
+    void updateItem(ItemDTO dto) throws SQLException;
 
-    boolean deleteItem(String code) throws SQLException;
+    void deleteItem(String code) throws SQLException;
 
     ItemDTO findItem(String itemCode) throws SQLException;
 
