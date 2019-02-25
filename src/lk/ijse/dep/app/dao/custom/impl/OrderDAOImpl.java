@@ -1,8 +1,6 @@
 package lk.ijse.dep.app.dao.custom.impl;
 
-import lk.ijse.dep.app.dao.CrudUtil;
 import lk.ijse.dep.app.dao.custom.OrderDAO;
-import lk.ijse.dep.app.db.DBConnection;
 import lk.ijse.dep.app.entity.Order;
 
 import java.sql.*;

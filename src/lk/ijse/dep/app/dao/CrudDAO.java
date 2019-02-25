@@ -8,14 +8,14 @@ import java.util.Optional;
 
 public interface CrudDAO<T extends SuperEntity, ID> extends SuperDAO {
 
-    Optional<T> find(ID key) throws SQLException;
+    Optional<T> find(ID key) throws SQLException, Exception;
 
-    Optional<List<T>> findAll() throws SQLException;
+    Optional<List<T>> findAll() throws SQLException, Exception;
 
-    boolean save(T entity) throws SQLException;
+    void save(T entity) throws SQLException, Exception;
 
-    boolean update(T entity) throws SQLException;
+    void update(T entity) throws SQLException, Exception;
 
-    boolean delete(ID key) throws SQLException;
+    void delete(ID key) throws SQLException, Exception;
 
 }

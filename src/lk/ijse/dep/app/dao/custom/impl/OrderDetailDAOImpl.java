@@ -1,14 +1,9 @@
 package lk.ijse.dep.app.dao.custom.impl;
 
-import lk.ijse.dep.app.dao.CrudUtil;
 import lk.ijse.dep.app.dao.custom.OrderDetailDAO;
-import lk.ijse.dep.app.db.DBConnection;
-import lk.ijse.dep.app.entity.Order;
 import lk.ijse.dep.app.entity.OrderDetail;
 import lk.ijse.dep.app.entity.OrderDetailPK;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

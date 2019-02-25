@@ -1,18 +1,12 @@
 package lk.ijse.dep.app.dao.custom.impl;
 
-import lk.ijse.dep.app.dao.CrudUtil;
 import lk.ijse.dep.app.dao.custom.ItemDAO;
-import lk.ijse.dep.app.db.DBConnection;
 import lk.ijse.dep.app.db.HibernateUtil;
 import lk.ijse.dep.app.entity.Item;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
