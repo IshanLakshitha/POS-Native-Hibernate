@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface ManageCustomersBO extends SuperBO {
 
-    List<CustomerDTO> getCustomers() throws SQLException;
+    List<CustomerDTO> getCustomers() throws Exception;
 
-    boolean createCustomer(CustomerDTO dto) throws SQLException;
+    void createCustomer(CustomerDTO dto) throws Exception;
 
-    boolean updateCustomer(CustomerDTO dto) throws SQLException;
+    void updateCustomer(CustomerDTO dto) throws Exception;
 
-    boolean deleteCustomer(String customerID) throws SQLException;
+    void deleteCustomer(String customerID) throws Exception;
 
-    CustomerDTO findCustomer(String id) throws SQLException;
+    CustomerDTO findCustomer(String id) throws Exception;
 
 
 

@@ -4,7 +4,10 @@ import lk.ijse.dep.app.business.Converter;
 import lk.ijse.dep.app.business.custom.ManageCustomersBO;
 import lk.ijse.dep.app.dao.custom.CustomerDAO;
 import lk.ijse.dep.app.dao.DAOFactory;
+import lk.ijse.dep.app.db.HibernateUtil;
 import lk.ijse.dep.app.dto.CustomerDTO;
+import lk.ijse.dep.app.entity.Customer;
+import org.hibernate.Session;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,48 +20,71 @@ public class ManageCustomersBOImpl implements ManageCustomersBO {
         customerDAO = DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.CUSTOMER);
     }
 
-    public List<CustomerDTO> getCustomers() throws SQLException {
-        return customerDAO.findAll().map(Converter::<CustomerDTO>getDTOList).get();
+    public List<CustomerDTO> getCustomers() throws Exception {
+        Session mySession = HibernateUtil.getSessionFactory().openSession();
+        try(Session session = mySession){
+            customerDAO.setSesstion(session);
+            session.beginTransaction();
+            List<CustomerDTO> customerDTOS = customerDAO.findAll().map(Converter::<CustomerDTO>getDTOList).get();
+            return customerDTOS;
+        } catch (Exception ex) {
+            mySession.getTransaction().rollback();
+            throw ex;
+        }
 
-//        return customerDAO.findAll().map(customers -> {
-//
-//            return Converter.getDTOList(customers);
-//
-////                List<CustomerDTO> dtos = new ArrayList<>();
-////                customers.forEach(c -> dtos.add(new CustomerDTO(c.getId(),c.getName(),c.getAddress())));
-//
-////                for (Customer c : customers) {
-////                    dtos.add(new CustomerDTO(c.getId(),c.getName(),c.getAddress()));
-////                }
-////                return dtos;
-//        }).get();
     }
 
-    public boolean createCustomer(CustomerDTO dto) throws SQLException {
-        return customerDAO.save(Converter.getEntity(dto));
+    public void createCustomer(CustomerDTO dto) throws Exception {
+      Session mySession = HibernateUtil.getSessionFactory().openSession();
+      try(Session session = mySession) {
+          customerDAO.setSesstion(session);
+          session.beginTransaction();
+          customerDAO.save(Converter.getEntity(dto));
+          session.getTransaction().commit();
+      } catch (Exception ex) {
+          mySession.getTransaction().rollback();
+          throw ex;
+      }
     }
 
-    public boolean updateCustomer(CustomerDTO dto) throws SQLException {
-        return customerDAO.update(Converter.getEntity(dto));
+    public void updateCustomer(CustomerDTO dto) throws Exception {
+       Session mySession = HibernateUtil.getSessionFactory().openSession();
+       try(Session session = mySession) {
+           customerDAO.setSesstion(session);
+           session.beginTransaction();
+           customerDAO.update(Converter.getEntity(dto));
+           session.getTransaction().commit();
+       } catch (Exception ex) {
+           mySession.getTransaction().rollback();
+           throw ex;
+       }
     }
 
-    public boolean deleteCustomer(String customerID) throws SQLException {
-        return customerDAO.delete(customerID);
+    public void deleteCustomer(String customerID) throws Exception {
+      Session mySession = HibernateUtil.getSessionFactory().openSession();
+      try(Session session = mySession) {
+          customerDAO.setSesstion(session);
+          session.beginTransaction();
+          customerDAO.delete(customerID);
+          session.getTransaction().commit();
+      } catch (Exception ex) {
+         mySession.getTransaction().rollback();
+         throw ex;
+      }
     }
 
-    public CustomerDTO findCustomer(String id) throws SQLException {
-//        return (CustomerDTO) customerDAO.find(id).map(Converter::getDTO).get();
-
-//        return customerDAO.find(id).map(new Function<Customer, CustomerDTO>() {
-//            @Override
-//            public CustomerDTO apply(Customer c) {
-//                return (CustomerDTO) Converter.getDTO(c);
-//            }
-//        }).get();
-
-//        return customerDAO.find(id).map(c -> Converter.<CustomerDTO>getDTO(c)).get();
-
-        return customerDAO.find(id).map(Converter::<CustomerDTO>getDTO).orElse(null);
+    public CustomerDTO findCustomer(String id) throws Exception {
+        Session mySession = HibernateUtil.getSessionFactory().openSession();
+        try(Session session = mySession) {
+            customerDAO.setSesstion(session);
+            session.beginTransaction();
+            CustomerDTO customerDTO = customerDAO.find(id).map(Converter::<CustomerDTO>getDTO).orElse(null);
+            session.getTransaction().commit();
+            return customerDTO;
+        } catch (Exception ex) {
+            mySession.getTransaction().rollback();
+            throw ex;
+        }
     }
 
 }
